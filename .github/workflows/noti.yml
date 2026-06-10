@@ -1,4 +1,4 @@
-name: Deploy to Surge
+name: Alerta NTFY
 
 on:
   push:
@@ -6,21 +6,13 @@ on:
       - main
 
 jobs:
-  deploy:
+  notificacion:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Surge
-        run: npm install -g surge
-
-      - name: Deploy
-        run: surge ./ yendry-pcstore.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+      - name: Enviar notificación a ntfy
+        run: |
+          curl -H "Title: Nuevo Push" \
+               -H "Priority: high" \
+               -d "Se realizó un push al repositorio en la rama main." \
+               https://ntfy.sh/devops-itla
